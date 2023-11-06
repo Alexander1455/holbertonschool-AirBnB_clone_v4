@@ -28,5 +28,17 @@ $(document).ready(function () {
             return amenities.join(', ');
         });
     });
+
+	// Obtiene el estado de la API
+    const apiStatus = $('DIV#api_status');
+    $.ajax('http://0.0.0.0:5001/api/v1/status/').done(function (data) {
+        if (data.status === 'OK') {
+            // Agrega la clase 'available' si la API está en funcionamiento
+            apiStatus.addClass('available');
+        } else {
+            // Elimina la clase 'available' si la API no está en funcionamiento
+            apiStatus.removeClass('available');
+        }
+    });
 });
 
