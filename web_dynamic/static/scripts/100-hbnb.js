@@ -40,5 +40,25 @@ $(document).ready(function () {
             apiStatus.removeClass('available');
         }
     });
+
+	// Maneja el clic en el botón de búsqueda
+	$('button').click(function () {
+		const requestData = JSON.stringify({ amenities: Object.keys(checked_box) });
+
+		// Realiza una solicitud POST a places_search con las comodidades seleccionadas
+		$.ajax({
+			type: 'POST',
+			url: 'http://0.0.0.0:5001/api/v1/places_search/',
+			contentType: 'application/json',
+			data: requestData,
+			success: function (data) {
+				$('.places').empty(); // Limpia el contenido antes de agregar nuevos resultados
+				for (let currentPlace of data) {
+					// Agrega los resultados de la búsqueda al HTML
+					$('.places').append('<article> <div class="title"> <h2>' + currentPlace.name + '</h2><div class="price_by_night">' + '$' + currentPlace.price_by_night + '</div></div> <div class="information"> <div class="max_guest"> <i class="fa fa-users fa-3x" aria-hidden="true"></i><br />' + currentPlace.max_guest + ' Guests</div><div class="number_rooms"> <i class="fa fa-bed fa-3x" aria-hidden="true"></i><br />' + currentPlace.number_rooms + ' Bedrooms</div><div class "number_bathrooms"> <i class="fa fa-bath fa-3x" aria-hidden="true"></i><br />' + currentPlace.number_bathrooms + ' Bathroom </div></div> <div class="user"> Owner: ' + currentPlace.user_id + '</div><div class="description">' + currentPlace.description + '</div></article>');
+				}
+			}
+		});
+	});
 });
 
